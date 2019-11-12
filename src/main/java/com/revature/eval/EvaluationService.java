@@ -1,5 +1,6 @@
 package com.revature.eval;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,8 +14,24 @@ public class EvaluationService {
 	 * @return
 	 */
 	public String reverse(String string) {
-		// TODO Write an implementation for this method declaration
-		return null;
+		String s = ""; //creates an empty string to hold the reversed string
+		
+		if(string == " ") { //checks to see if the string passed in is empty
+			s = " ";
+			System.out.println("Looks like your string is empty");
+		}
+		if(string == null) { //checks to see if string passed in is null
+			return null;
+		}
+		else {
+			//this for loop iterates thru the string passed in, from the character in the last position
+			//in the string to the to the character in the first position and concatenates each character 
+			//into string s to create the new reversed string 
+			for(int i = string.length() -1; i>=0; i--) { 
+				s = s + string.charAt(i); 
+			}
+			return s;
+		}
 	}
 
 	
@@ -27,13 +44,26 @@ public class EvaluationService {
 	 * @return
 	 */
 	public String acronym(String phrase) {
-		// TODO Write an implementation for this method declaration
-		return null;
+		if(phrase == null) { //checks to see if phrase passed in is null
+			return null;
+		}
+		
+		String acronym = ""; //creates an empty string to hold the acronym result
+		
+		//creates a string array to hold the split version of the phrase passed in
+		//the phrase is split/broken wherever there is a "-", whitespace, or a special character
+		//each string from the break is added to the string of arrays
+		String[] splitPhrase = phrase.split("\\s|-"); 
+		for(int i = 0; i < splitPhrase.length; i++) {
+			acronym = acronym + splitPhrase[i].charAt(0); //the first character of each string (each word in the split phrase is concatenated and stored in acronym
+		}
+		return acronym.toUpperCase(); //the toUpperCase() method is used to make the final acronym ALL CAPS
+		
 	}
 	
 	
 	/**
-	 * 3. Given a word, compute the scrabble score for that word.
+	 * 3. Given a word, compute the Scrabble score for that word.
 	 * 
 	 * --Letter Values-- Letter Value A, E, I, O, U, L, N, R, S, T = 1; D, G = 2; B,
 	 * C, M, P = 3; F, H, V, W, Y = 4; K = 5; J, X = 8; Q, Z = 10; Examples
@@ -48,9 +78,55 @@ public class EvaluationService {
 	 * @return
 	 */
 	public int getScrabbleScore(String string) {
-		// TODO Write an implementation for this method declaration
-		return 0;
-	}
+		
+		int points = 0; //a counter to keep track of the letter value/word score
+		
+		String word = string.toUpperCase(); //converts word/string passed in, to uppercase since Scrabble letters are ALLS CAPS
+		
+		for(int i=0; i< word.length(); i++) {
+			
+			if((word.charAt(i)=='A') ||(word.charAt(i)=='E') || (word.charAt(i)=='I') || (word.charAt(i)=='O') || (word.charAt(i)=='L') || (word.charAt(i)=='N') || (word.charAt(i)=='R') || (word.charAt(i)=='S') || (word.charAt(i)=='T') || (word.charAt(i)=='U')) {
+				
+				points = points + 1; //checks to see if the letter is either A, E, I, O, U, L, N, R, S, or T and adds 1 point if it is
+				
+			}
+			
+			else if((word.charAt(i)=='D') || (word.charAt(i)=='G')){
+				points = points + 2; //checks to see if the letter is either D or G and adds 2 points if it is
+			}
+			
+			
+			if((word.charAt(i)=='B') || (word.charAt(i)=='C') || (word.charAt(i)=='M') || (word.charAt(i)=='P')) {
+				
+				points = points + 3; //checks to see if the letter is either B, C, M or P and adds 3 points if it is
+			}
+			
+			else if(word.charAt(i)=='F' || word.charAt(i)=='H' || word.charAt(i)=='V'|| word.charAt(i)=='W'|| word.charAt(i)=='Y'){
+				
+				points = points + 4; //checks to see if the letter is either F, H, V, W, or Y and adds 4 points if it is
+			}	
+			
+			else if(word.charAt(i)=='K') {
+				
+				points = points + 5; //checks to see if the letter is K and adds 5 points if it is
+				
+			}
+			else if((word.charAt(i)=='J') || (word.charAt(i)=='X')) {
+				
+				points = points + 8; //checks to see if the letter is either J or X and adds 8 to it
+				
+			}
+			else if((word.charAt(i)=='Q') || (word.charAt(i)=='Z')) {
+			
+			points = points + 10; //checks to see if the letter is either Q or z
+			
+			}
+		}
+	return points; //returns the total number of points/Scrabble score for the word passed in
+			
+ }
+			
+
 	
 	
 	/**
@@ -63,9 +139,26 @@ public class EvaluationService {
 	 * @return 
 	 */
 	public Map<String, Integer> wordCount(String string) {
-		// TODO Write an implementation for this method declaration
-		return null;
+		String [] wordsinPhrase =string.split("\\s*(=>|,|\\s)\\s*");
+		
+		LinkedHashMap<String, Integer>wordCount = new LinkedHashMap<String, Integer>();
+		
+		int counter = 0;
+		
+		for(int i=0;i<wordsinPhrase.length;i++) {
+			for(int j=0;j<wordsinPhrase.length;j++) {
+				
+				if(wordsinPhrase[i].equals(wordsinPhrase[j])) {
+					counter++;
+			}
+		}
+			
+		wordCount.put(wordsinPhrase[i], counter);
+		counter = 0;
+		
 	}
+	return wordCount;
+}
 	
 	/**
 	 * 5. Implement a binary search algorithm.
@@ -106,9 +199,28 @@ public class EvaluationService {
 		private List<T> sortedList;
 
 		public int indexOf(T t) {
-			// TODO Write an implementation for this method declaration
-			return 0;
+			int value = 0;
+			
+			int left = 0;
+			int right = sortedList.size() - 1;
+			int middle = sortedList.size()/2;
+			
+			if(sortedList.indexOf(t) == middle) {
+				return middle;
+			}
+			else if(sortedList.indexOf(t) < middle) {
+				for(int i=left; i<middle; i++) {
+					value = sortedList.indexOf(t);
+				}
+			}
+			else if(sortedList.indexOf(t) > middle) {
+				for(int i=middle; i<right; i++) {
+					value = sortedList.indexOf(t);
+				}
+			}
+			return value;
 		}
+		
 
 		public BinarySearch(List<T> sortedList) {
 			super();
